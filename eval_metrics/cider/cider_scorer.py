@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-# Tsung-Yi Lin <tl483@cornell.edu>
-# Ramakrishna Vedantam <vrama91@vt.edu>
-
 import copy
 from collections import defaultdict
 import numpy as np
@@ -147,14 +144,14 @@ class CiderScorer(object):
             for n in range(self.n):
                 # ngram
                 for (ngram,count) in vec_hyp[n].items():
-                    # vrama91 : added clipping
+                    # added clipping
                     val[n] += min(vec_hyp[n][ngram], vec_ref[n][ngram]) * vec_ref[n][ngram]
 
                 if (norm_hyp[n] != 0) and (norm_ref[n] != 0):
                     val[n] /= (norm_hyp[n]*norm_ref[n])
 
                 assert(not math.isnan(val[n]))
-                # vrama91: added a length based gaussian penalty
+                # added a length based gaussian penalty
                 val[n] *= np.e**(-(delta**2)/(2*self.sigma**2))
             return val
 
