@@ -1,15 +1,6 @@
 #!/usr/bin/env python
 
 # bleu_scorer.py
-# David Chiang <chiang@isi.edu>
-
-# Copyright (c) 2004-2006 University of Maryland. All rights
-# reserved. Do not redistribute without permission from the
-# author. Not for commercial use.
-
-# Modified by: 
-# Hao Fang <hfang@uw.edu>
-# Tsung-Yi Lin <tl483@cornell.edu>
 
 '''Provides:
 cook_refs(refs, n=4): Transform a list of reference sentences as strings into a form usable by cook_test().
@@ -32,7 +23,7 @@ def precook(s, n=4, out=False):
             counts[ngram] += 1
     return (len(words), counts)
 
-def cook_refs(refs, eff=None, n=4): ## lhuang: oracle will call with "average"
+def cook_refs(refs, eff=None, n=4): ## oracle will call with "average"
     '''Takes a list of reference sentences for a single segment
     and returns an object that encapsulates everything that BLEU
     needs to know about them.'''
@@ -50,10 +41,6 @@ def cook_refs(refs, eff=None, n=4): ## lhuang: oracle will call with "average"
         reflen = min(reflen)
     elif eff == "average":
         reflen = float(sum(reflen))/len(reflen)
-
-    ## lhuang: N.B.: leave reflen computaiton to the very end!!
-    
-    ## lhuang: N.B.: in case of "closest", keep a list of reflens!! (bad design)
 
     return (reflen, maxcounts)
 
@@ -234,7 +221,7 @@ class BleuScorer(object):
                 bleu *= (float(comps['correct'][k]) + tiny) \
                         /(float(comps['guess'][k]) + small) 
                 bleu_list[k].append(bleu ** (1./(k+1)))
-            ratio = (testlen + tiny) / (reflen + small) ## N.B.: avoid zero division
+            ratio = (testlen + tiny) / (reflen + small) ## avoid zero division
             if ratio < 1:
                 for k in range(n):
                     bleu_list[k][-1] *= math.exp(1 - 1/ratio)
@@ -251,7 +238,7 @@ class BleuScorer(object):
             bleu *= float(totalcomps['correct'][k] + tiny) \
                     / (totalcomps['guess'][k] + small)
             bleus.append(bleu ** (1./(k+1)))
-        ratio = (self._testlen + tiny) / (self._reflen + small) ## N.B.: avoid zero division
+        ratio = (self._testlen + tiny) / (self._reflen + small) ##: avoid zero division
         if ratio < 1:
             for k in range(n):
                 bleus[k] *= math.exp(1 - 1/ratio)
