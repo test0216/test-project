@@ -168,10 +168,10 @@ def main(args):
             bleu_2 = score['Bleu_2']
             bleu_3 = score['Bleu_3']
             bleu_4 = score['Bleu_4']
-            #meteor = score['METEOR']
+            meteor = score['METEOR']
             rouge_l = score['ROUGE_L']
             cider = score['CIDEr']
-            #spice = score['SPICE']
+            spice = score['SPICE']
           
             if bleu_2 > best_bleu_2:
                 best_bleu_2 = bleu_2
