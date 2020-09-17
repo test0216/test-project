@@ -59,8 +59,10 @@ def main(args):
     best_bleu_2 = 0.0
     best_bleu_3 = 0.0
     best_bleu_4 = 0.0
+    best_meteor = 0.0
     best_rouge_l = 0.0
     best_cider = 0.0
+    best_spice = 0.0
 
     # Start Training
     for epoch in range(start_epoch, args.num_epochs + 1):    
@@ -179,14 +181,18 @@ def main(args):
                 best_bleu_3 = bleu_3
             if bleu_4 > best_bleu_4:
                 best_bleu_4 = bleu_4
+            if meteor > best_meteor:
+                best_meteor = meteor
             if rouge_l > best_rouge_l:
                 best_rouge_l = rouge_l
             if cider > best_cider:
-                best_cider = cider     
+                best_cider = cider   
+            if spice > best_spice:
+                best_spice = spice
             if bleu_1 > best_bleu_1:
                 best_bleu_1 = bleu_1
-                print('Best epoch: %d, Model best score: bleu_1:%.5f, bleu_2:%.5f, bleu_3:%.5f, bleu_4:%.5f, rouge_l:%.5f, cider:%.5f\n' \
-                                 % (epoch, best_bleu_1, best_bleu_2, best_bleu_3, best_bleu_4, best_rouge_l, best_cider))
+                print('Best epoch: %d, Model best score: bleu_1:%.5f, bleu_2:%.5f, bleu_3:%.5f, bleu_4:%.5f, meteor:%.5f, rouge_l:%.5f, cider:%.5f, spice:%.5f\n' \
+                                 % (epoch, best_bleu_1, best_bleu_2, best_bleu_3, best_bleu_4, bets_meteor, best_rouge_l, best_cider, best_spice))
                 path_name = './save/' + args.save_name + str(epoch) + '_.pth'
                 torch.save(model.module.state_dict(), path_name) # module
                 print('{} has been saved | loss: {}'.format(path_name, loss.data)) 
@@ -196,8 +202,8 @@ def main(args):
             path_name = './save/' + args.save_name + str(epoch) + '_.pth'
             torch.save(model.module.state_dict(), path_name) # module                
             print('{} has been saved | loss: {}'.format(path_name, loss.data))
-            print('Epoch: %d, Model score: bleu_1:%.5f, bleu_2:%.5f, bleu_3:%.5f, bleu_4:%.5f, rouge_l:%.5f, cider:%.5f\n' \
-                  % (epoch, bleu_1, bleu_2, bleu_3, bleu_4, rouge_l, cider))                                
+            print('Epoch: %d, Model score: bleu_1:%.5f, bleu_2:%.5f, bleu_3:%.5f, bleu_4:%.5f, meteor:.5%, rouge_l:%.5f, cider:%.5f, spice:%.5f\n' \
+                  % (epoch, bleu_1, bleu_2, bleu_3, bleu_4, meteor, rouge_l, cider, spice))                                
 
 if __name__ == '__main__':
     args = opts.parse_opt()
